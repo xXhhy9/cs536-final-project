@@ -3,98 +3,15 @@
  * @author
  * - Haoyu Zhang
  */
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <iostream>
-#include <string>
-#include <curl/curl.h>
-#include <thread>
-#include <vector>
-#include <cstring>
-#include <sys/socket.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <nlohmann/json.hpp>
 
-
+#include "header.hpp"
 
 using namespace std;
-
-const string instruction = "Default";
 
 typedef struct client_thread_args {
     int sockfd;
     struct sockaddr_in server;
 } client_thread_args_t;
-
-thread_local vector<pair<string, string>> history;
-
-// libcurl callback function to capture the API response
-static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-    ((string*)userp)->append((char*)contents, size * nmemb);
-    return size * nmemb;
-}
-
-// Function to call the ChatGPT API
-string callChatGPT(const string& new_query) {
-    CURL* curl;
-    CURLcode res;
-    string readBuffer;
-
-    // Initialize libcurl
-
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    curl = curl_easy_init();
-
-    if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://api.openai.com/v1/chat/completions");
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-
-        // Set API key and other HTTP headers
-        struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Authorization: Bearer {Replace Key}");
-        headers = curl_slist_append(headers, "Content-Type: application/json");
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-        // Updated POST data format
-        string postData = "{\"role\": \"system\", \"content\": \"" + instruction + "\"}, ";
-        for (auto & conversation: history) {
-            postData += "{\"role\": \"user\", \"content\": \"" + conversation.first + "\"},";
-            postData += "{\"role\": \"assistant\", \"content\": \"" + conversation.second + "\"},";
-        }
-
-        postData += "{\"role\": \"user\", \"content\": \"" + new_query + "\"}";
-        string pack = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [" + postData +"], \"temperature\": 0.7}";
-
-        cout << pack.c_str() << endl;
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, pack.c_str());
-
-        res = curl_easy_perform(curl);
-
-        if(res != CURLE_OK) {
-            cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
-        }
-
-        auto jsonResponse = nlohmann::json::parse(readBuffer);
-        auto choices = jsonResponse["choices"];
-
-        string message = "";
-        if (!choices.empty()) {
-            message = choices[0]["message"]["content"];
-        }
-
-        // Cleanup
-        curl_easy_cleanup(curl);
-        return message;
-    }
-
-    return readBuffer;
-}
 
 void handle_client(int clientSocket) {
     char buffer[1024];
@@ -106,8 +23,8 @@ void handle_client(int clientSocket) {
         }
         // handle incoming question.
         string new_question(buffer);
+        if (new_question == "exit") break;
         string response = callChatGPT(new_question);
-        history.push_back(make_pair(new_question, response));
         cout << response << endl;
         response += '\0';
         cout.flush();
@@ -116,6 +33,8 @@ void handle_client(int clientSocket) {
             continue;
         }
     }
+    cout << "disconnecting..." << endl;
+    cout.flush();
     close(clientSocket);
 }
 
@@ -185,6 +104,9 @@ int main(int argc, char const* argv[]) {
 		perror("listen");
 		exit(EXIT_FAILURE);
 	}
+
+    // Initialize libcurl
+    curl_global_init(CURL_GLOBAL_DEFAULT);
 
     printf("Server is listening on %s:%d; descriptor %d\n", inet_ntoa(serverAddress.sin_addr), PORT, serverSocket);
 

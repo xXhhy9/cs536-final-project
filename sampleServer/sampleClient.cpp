@@ -72,6 +72,7 @@ int main(int argc, char const* argv[]) {
         cout.flush();
     }
 
+    write(clientSocket, "exit", 5);
     cout << "disconnecting......" << endl;
     close(clientSocket);
     return 0;
