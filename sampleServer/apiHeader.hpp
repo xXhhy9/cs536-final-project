@@ -1,5 +1,5 @@
 
-#define key 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
+#define key 
 #define instruction ""
 
 #define TEMPERATURE 0.5
