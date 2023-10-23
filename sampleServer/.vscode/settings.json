@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.inc": "nasm",
+        "iosfwd": "cpp",
+        "thread": "cpp",
+        "vector": "cpp",
+        "string": "cpp",
+        "ostream": "cpp"
+    }
+}
