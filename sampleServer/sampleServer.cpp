@@ -57,7 +57,7 @@ string callChatGPT(const string& new_query) {
 
         // Set API key and other HTTP headers
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Authorization: Bearer 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");
+        headers = curl_slist_append(headers, "Authorization: Bearer {Replace Key}");
         headers = curl_slist_append(headers, "Content-Type: application/json");
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
