@@ -20,12 +20,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <nlohmann/json.hpp>
+#include <fstream>
+
 
 
 using namespace std;
 
 // server global constant
-const string apiKey = "Authorization: Bearer {Replace Key}"; 
+const string apiKey = "Authorization: Bearer <replace the key>"; 
 const string instruction = "Default";
 const string text_request = "Content-Type: application/json";
 const float temperature =  0.5;
@@ -33,3 +35,15 @@ const unsigned short max_toks = 500;
 
 // api function calls
 string callChatGPT(const string& new_query);
+string speechtoText(const string& path);
+
+// Structures
+struct ClientThreadArgs {
+    int sockfd;
+    sockaddr_in server;
+};
+
+struct MessageHeader {
+    uint8_t type;  // 1 for text, 2 for audio -> mp3 file
+    unsigned int length;  // length of the following message
+};

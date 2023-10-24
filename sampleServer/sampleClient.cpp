@@ -11,12 +11,18 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <sstream>
+#include <fstream>
 
 
 using namespace std;
 
+struct MessageHeader {
+    int type;  // 1 for text, 2 for audio
+    int length;  // length of the following message
+};
+
 int main(int argc, char const* argv[]) {
-    int clientSocket, client_fd = 0;
+    int clientSocket;
 
     if (argc != 3) {
 		fprintf(stderr, "Usage: ./sampleClient server_ip server_port\n");
@@ -45,15 +51,46 @@ int main(int argc, char const* argv[]) {
 
 
     while (true) {
-        cout << "Enter query: ";
-        string query;
-        getline(cin, query);
-        if (query == "exit") break;
-        write(clientSocket, query.c_str(), query.size());
+        cout << "Choose an option:\n1. Send Text\n2. Send Audio\n3. Exit\n";
+        int choice;
+        cin >> choice;
 
-        char buffer[256];
-        std::stringstream ss;
+        stringstream ss;
+        if (choice == 1) {
+            // Text query
+            cout << "Enter query: ";
+            string query;
+            getline(cin, query);
+            if (query == "exit") break;
+            // Step 1: send request header
+            MessageHeader header{1, (int)query.size()};
+            write(clientSocket, &header, sizeof(header));
 
+            // Step 2: send query
+            write(clientSocket, query.c_str(), query.size());
+
+        } else if (choice == 2) {
+            //audio file 
+            ifstream audioFile("<Replace with audio file directory>", ios::binary | ios::ate);
+            streamsize size = audioFile.tellg();
+            audioFile.seekg(0, ios::beg);
+
+            char* buffer = new char[size];
+            if (audioFile.read(buffer, size)) {
+                MessageHeader header{2, (int)size};
+                write(clientSocket, &header, sizeof(header));
+                write(clientSocket, buffer, size);
+            }
+            delete[] buffer;
+            audioFile.close();
+        } else if (choice == 3) {
+            break;
+        } else {
+            cout << "invalid input" << endl;
+            continue;
+        }
+        
+        char buffer[4096];
         while (true) {
             memset(buffer, 0, sizeof(buffer));
             ssize_t bytes_received = read(clientSocket, buffer, sizeof(buffer) - 1);
@@ -61,18 +98,16 @@ int main(int argc, char const* argv[]) {
                 break;
             }
             ss.write(buffer, bytes_received);
-            printf("%d\n", buffer[bytes_received - 1]);
             if (buffer[bytes_received - 1] == '\n' || buffer[bytes_received - 1] == '\0') {
                 break;
             }
         }
 
-        std::string response = ss.str();
+        string response = ss.str();
         cout << "Server response: " << response << endl;
         cout.flush();
     }
 
-    write(clientSocket, "exit", 5);
     cout << "disconnecting......" << endl;
     close(clientSocket);
     return 0;

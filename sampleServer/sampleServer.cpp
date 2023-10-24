@@ -8,34 +8,86 @@
 
 using namespace std;
 
-typedef struct client_thread_args {
-    int sockfd;
-    struct sockaddr_in server;
-} client_thread_args_t;
+inline string buildPostRequest(const string& new_query);
 
-void handle_client(int clientSocket) {
-    char buffer[1024];
+thread_local vector<pair<string, string>> history;
+
+void handle_client(ClientThreadArgs args) {
+    const int clientSocket = args.sockfd;
+    struct sockaddr_in address = args.server;
+    char buffer[4096];
     while (true) {
-        bzero(buffer, sizeof(buffer));
-        ssize_t n = read(clientSocket, buffer, sizeof(buffer) - 1);
-        if (n <= 0) {
+        // Step 1. read message header
+        MessageHeader header;
+        if ((read(clientSocket, &header, sizeof(header))) <= 0) {
             break;
         }
-        // handle incoming question.
-        string new_question(buffer);
-        if (new_question == "exit") break;
-        string response = callChatGPT(new_question);
-        cout << response << endl;
-        response += '\0';
-        cout.flush();
-        ssize_t bytesSend = write(clientSocket, response.c_str(), response.size());
-        if (bytesSend <= 0) {
+
+        if (header.type == 1) {
+            bzero(buffer, sizeof(buffer));
+            if ((read(clientSocket, buffer, sizeof(buffer) - 1)) < 0) break;
+
+            // handle incoming question.
+            string new_question(buffer);
+            string query = buildPostRequest(new_question);
+            string response = callChatGPT(query);
+
+            cout << response << endl;
+            cout.flush();
+            if ((write(clientSocket, (response + '\0').c_str(), (response).size() + 1)) < 0) break;
+            history.push_back(make_pair(new_question, response));
+        } else if (header.type == 2) {
+            cout << "audio selected" << endl;
+            // handle audio
+            string path = "audio/gpt.m4a";
+            ofstream audioFile(path, ios::binary);
+            int remaining = header.length;
+            while (remaining > 0) {
+                ssize_t n = read(clientSocket, buffer, min((int)sizeof(buffer), remaining));
+                if (n <= 0) {
+                    // Handle error or disconnection
+                    break;
+                }
+                audioFile.write(buffer, n);
+                remaining -= n;
+            }
+            audioFile.close();
+
+            // Step 2: Handle Speech to text
+            string transcription = speechtoText(path);
+            cout << transcription << endl;
+            string query = buildPostRequest(transcription);
+            string response = callChatGPT(query);
+            cout << response << endl;
+            cout.flush();
+            if ((write(clientSocket, (response + '\0').c_str(), (response).size() + 1)) < 0) break;
+            history.push_back(make_pair(transcription, response));
+
+        } else {
+            string response = "invalid request";
+            if ((write(clientSocket, (response + '\0').c_str(), (response).size() + 1)) < 0) break;
             continue;
         }
+
+        
     }
-    cout << "disconnecting..." << endl;
-    cout.flush();
+    printf("Client %s:%d disconnected\n", 
+                inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+    fflush(stdout);
     close(clientSocket);
+}
+
+inline string buildPostRequest(const string& new_query) {
+    // Updated POST data format
+    string postData = "{\"role\": \"system\", \"content\": \"" + instruction + "\"}, ";
+    for (auto & conversation: history) {
+        postData += "{\"role\": \"user\", \"content\": \"" + conversation.first + "\"},";
+        postData += "{\"role\": \"assistant\", \"content\": \"" + conversation.second + "\"},";
+    }
+
+    postData += "{\"role\": \"user\", \"content\": \"" + new_query + "\"}";
+    string pack = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [" + postData +"], \"temperature\": " + to_string(temperature) +"}";
+    return pack;
 }
 
 void accept_clients(int serverSocket) {
@@ -54,12 +106,12 @@ void accept_clients(int serverSocket) {
             inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
         // Create thread for client and specify argument
-        client_thread_args_t *args = (client_thread_args_t *)malloc(sizeof(client_thread_args_t));
-        args->sockfd = client_sock;
-        args->server = address;
+        ClientThreadArgs args;
+        args.sockfd = client_sock;
+        args.server = address;
 
         try {
-            thread client_thread(handle_client, client_sock);
+            thread client_thread(handle_client, args);
             client_thread.detach();
         } catch (const system_error& e) {
             cerr << "Failed to create thread: " << e.what() << '\n';
@@ -108,7 +160,7 @@ int main(int argc, char const* argv[]) {
     // Initialize libcurl
     curl_global_init(CURL_GLOBAL_DEFAULT);
 
-    printf("Server is listening on %s:%d; descriptor %d\n", inet_ntoa(serverAddress.sin_addr), PORT, serverSocket);
+    printf("Server is listening on %s:%d\n", inet_ntoa(serverAddress.sin_addr), PORT);
 
     thread acceptClient(accept_clients, serverSocket);
     acceptClient.join();
