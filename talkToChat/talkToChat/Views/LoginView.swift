@@ -15,33 +15,30 @@ struct LoginView: View {
         NavigationView {
             VStack {
                 // Header
-                HeaderView()
+                HeaderView(title: "Talk To Chat",
+                           font: "Arial Rounded MT Bold",
+                           angle: 15,
+                           background: .blue)
                 //Login Form
                 Form {
                     TextField("Email Address", text: $email)
                         .textFieldStyle(RoundedBorderTextFieldStyle());
                     SecureField("Password", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle());
-                    Button {
-                        //Attempt Login
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                            Text("Login")
-                                .foregroundColor(.white)
-                                .bold()
-                        }
+                    TTCButton(title: "Login", background: .blue
+                    ) {
+                        //attempt login
                     }
+                    .padding()
                 }
-                .padding()
+                .offset(y: -50)
+
                 
                 //Register
                 VStack {
-                    Text("Create account")
                     NavigationLink("Create An Account", destination: RegisterView())
                 }
-                .padding(.bottom, 50)
+                .padding(.bottom, 30)
                 
                 Spacer()
             }

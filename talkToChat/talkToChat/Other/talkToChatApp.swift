@@ -14,6 +14,7 @@ import FirebaseCore
 struct talkToChatApp: App {
     init() {
         FirebaseApp.configure()
+        UINavigationBar.appearance().tintColor = .white
     }
     var body: some Scene {
         WindowGroup {

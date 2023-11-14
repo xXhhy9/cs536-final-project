@@ -38,6 +38,7 @@
 		D191AB542B03ED00004B8656 /* NetworkInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB532B03ED00004B8656 /* NetworkInputView.swift */; };
 		D191AB562B03ED1A004B8656 /* NetworkInputViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB552B03ED1A004B8656 /* NetworkInputViewViewModel.swift */; };
 		D191AB582B03ED2A004B8656 /* NetworkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB572B03ED2A004B8656 /* NetworkParameters.swift */; };
+		D191AB5A2B03FF3F004B8656 /* TTCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB592B03FF3F004B8656 /* TTCButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		D191AB532B03ED00004B8656 /* NetworkInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInputView.swift; sourceTree = "<group>"; };
 		D191AB552B03ED1A004B8656 /* NetworkInputViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInputViewViewModel.swift; sourceTree = "<group>"; };
 		D191AB572B03ED2A004B8656 /* NetworkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkParameters.swift; sourceTree = "<group>"; };
+		D191AB592B03FF3F004B8656 /* TTCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTCButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 				D191AB3F2B03E0AE004B8656 /* NetworkItemView.swift */,
 				D191AB512B03E513004B8656 /* HeaderView.swift */,
 				D191AB532B03ED00004B8656 /* NetworkInputView.swift */,
+				D191AB592B03FF3F004B8656 /* TTCButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				D191AB322B03DF91004B8656 /* RegisterView.swift in Sources */,
 				D191AB542B03ED00004B8656 /* NetworkInputView.swift in Sources */,
 				D191AB442B03E0F8004B8656 /* MainViewViewModel.swift in Sources */,
+				D191AB5A2B03FF3F004B8656 /* TTCButton.swift in Sources */,
 				D191AB402B03E0AE004B8656 /* NetworkItemView.swift in Sources */,
 				D191AB422B03E0CD004B8656 /* NetworkItem.swift in Sources */,
 				D191AB4E2B03E136004B8656 /* NetworkViewViewModel.swift in Sources */,
