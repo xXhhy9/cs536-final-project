@@ -13,7 +13,23 @@ struct MainView: View {
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
             //signed in
-            NetworkInputView()
+            TabView {
+                NetworkInputView()
+                    .tabItem {
+                        Label("Network Settings", systemImage: "gear")
+                    }
+                ChatLogView()
+                    .tabItem {
+                        Label("Chat", systemImage: "house")
+                    }
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage:
+                                "person.circle")
+                    }
+                
+
+            }
         } else {
             LoginView()
         }

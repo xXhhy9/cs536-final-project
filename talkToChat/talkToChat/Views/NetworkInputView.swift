@@ -10,6 +10,7 @@ import SwiftUI
 struct NetworkInputView: View {
     var body: some View {
         Text("Enter Ip and port number")
+
     }
 }
 
