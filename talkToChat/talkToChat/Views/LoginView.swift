@@ -9,7 +9,9 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel = LoginViewViewModel()
-
+    init() {
+        UINavigationBar.appearance().tintColor = .white
+    }
     var body: some View {
         NavigationView {
             VStack {
@@ -45,12 +47,13 @@ struct LoginView: View {
                 //Register
                 VStack {
                     NavigationLink("Create An Account", destination: RegisterView())
+                        .accentColor(.blue)
                 }
                 .padding(.bottom, 30)
-                
                 Spacer()
             }
         }
+        .accentColor(.white)
     }
 }
 

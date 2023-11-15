@@ -9,6 +9,9 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject var viewModel = RegisterViewViewModel()
+    init() {
+        UINavigationBar.appearance().tintColor = .white
+    }
     var body: some View {
         VStack {
             HeaderView(title: "Register",
