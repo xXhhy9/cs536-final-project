@@ -39,6 +39,7 @@
 		D191AB562B03ED1A004B8656 /* NetworkInputViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB552B03ED1A004B8656 /* NetworkInputViewViewModel.swift */; };
 		D191AB582B03ED2A004B8656 /* NetworkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB572B03ED2A004B8656 /* NetworkParameters.swift */; };
 		D191AB5A2B03FF3F004B8656 /* TTCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB592B03FF3F004B8656 /* TTCButton.swift */; };
+		D191AB5C2B04440A004B8656 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB5B2B04440A004B8656 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		D191AB552B03ED1A004B8656 /* NetworkInputViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInputViewViewModel.swift; sourceTree = "<group>"; };
 		D191AB572B03ED2A004B8656 /* NetworkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkParameters.swift; sourceTree = "<group>"; };
 		D191AB592B03FF3F004B8656 /* TTCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTCButton.swift; sourceTree = "<group>"; };
+		D191AB5B2B04440A004B8656 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 				D191AAF62B03D989004B8656 /* talkToChatApp.swift */,
 				D191AAFA2B03D98A004B8656 /* Assets.xcassets */,
 				D191AB272B03DC2D004B8656 /* GoogleService-Info.plist */,
+				D191AB5B2B04440A004B8656 /* Extensions.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				D191AB3E2B03E0A4004B8656 /* NetworkView.swift in Sources */,
 				D191AAF72B03D989004B8656 /* talkToChatApp.swift in Sources */,
 				D191AB382B03E054004B8656 /* ChatLogView.swift in Sources */,
+				D191AB5C2B04440A004B8656 /* Extensions.swift in Sources */,
 				D191AB4C2B03E128004B8656 /* ChatItemViewViewModel.swift in Sources */,
 				D191AB342B03DFDE004B8656 /* User.swift in Sources */,
 				D191AB302B03DF42004B8656 /* LoginView.swift in Sources */,
