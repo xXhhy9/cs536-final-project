@@ -22,13 +22,16 @@ struct MainView: View {
                     .tabItem {
                         Label("Chat", systemImage: "house")
                     }
+                NetworkPerformanceView()
+                    .tabItem {
+                        Label("Network Performance", systemImage:
+                                "gear")
+                    }
                 ProfileView()
                     .tabItem {
                         Label("Profile", systemImage:
                                 "person.circle")
                     }
-                
-
             }
         } else {
             LoginView()

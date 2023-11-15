@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D18484E72B0457A800A061A8 /* NetworkPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */; };
 		D191AAF72B03D989004B8656 /* talkToChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF62B03D989004B8656 /* talkToChatApp.swift */; };
 		D191AAF92B03D989004B8656 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF82B03D989004B8656 /* MainView.swift */; };
 		D191AAFB2B03D98A004B8656 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D191AAFA2B03D98A004B8656 /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		D191AB5A2B03FF3F004B8656 /* TTCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB592B03FF3F004B8656 /* TTCButton.swift */; };
 		D191AB5C2B04440A004B8656 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AB5B2B04440A004B8656 /* Extensions.swift */; };
 		D1AB16EB2B04517600166755 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AB16EA2B04517600166755 /* ProfileView.swift */; };
+		D1AB16ED2B04563700166755 /* ProfileViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AB16EC2B04563700166755 /* ProfileViewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPerformanceView.swift; sourceTree = "<group>"; };
 		D191AAF32B03D989004B8656 /* talkToChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talkToChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D191AAF62B03D989004B8656 /* talkToChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = talkToChatApp.swift; sourceTree = "<group>"; };
 		D191AAF82B03D989004B8656 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -95,6 +98,7 @@
 		D191AB592B03FF3F004B8656 /* TTCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTCButton.swift; sourceTree = "<group>"; };
 		D191AB5B2B04440A004B8656 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D1AB16EA2B04517600166755 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		D1AB16EC2B04563700166755 /* ProfileViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +200,7 @@
 				D191AB532B03ED00004B8656 /* NetworkInputView.swift */,
 				D191AB592B03FF3F004B8656 /* TTCButton.swift */,
 				D1AB16EA2B04517600166755 /* ProfileView.swift */,
+				D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				D191AB4D2B03E136004B8656 /* NetworkViewViewModel.swift */,
 				D191AB4F2B03E14A004B8656 /* NetworkItemViewViewModel.swift */,
 				D191AB552B03ED1A004B8656 /* NetworkInputViewViewModel.swift */,
+				D1AB16EC2B04563700166755 /* ProfileViewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -378,7 +384,9 @@
 			files = (
 				D191AAF92B03D989004B8656 /* MainView.swift in Sources */,
 				D191AB322B03DF91004B8656 /* RegisterView.swift in Sources */,
+				D18484E72B0457A800A061A8 /* NetworkPerformanceView.swift in Sources */,
 				D191AB542B03ED00004B8656 /* NetworkInputView.swift in Sources */,
+				D1AB16ED2B04563700166755 /* ProfileViewViewModel.swift in Sources */,
 				D191AB442B03E0F8004B8656 /* MainViewViewModel.swift in Sources */,
 				D191AB5A2B03FF3F004B8656 /* TTCButton.swift in Sources */,
 				D191AB402B03E0AE004B8656 /* NetworkItemView.swift in Sources */,
