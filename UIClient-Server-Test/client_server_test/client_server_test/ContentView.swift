@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = ContentViewViewModel()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Form {
+                TextField("IP", text: viewModel.$ip)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Port", text:viewModel.$port)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
         }
         .padding()
     }
