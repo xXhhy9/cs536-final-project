@@ -27,6 +27,10 @@ struct ContentView: View {
                 viewModel.startConnection(host: host, portString: port)
             }
             .padding()
+            
+            NavigationLink(destination: ConnectedView(), isActive: $viewModel.isConnected) {
+                EmptyView()
+            }
         }
     }
 }
