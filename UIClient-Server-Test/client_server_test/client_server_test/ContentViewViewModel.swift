@@ -47,7 +47,6 @@ class ContentViewViewModel: ObservableObject {
             default:
                 print("state: \(state)")
                 break
-                
             }
         }
         connection?.start(queue: .global())
@@ -65,6 +64,21 @@ class ContentViewViewModel: ObservableObject {
 
         return SecCertificateCreateWithData(nil, data as CFData)
     }
+    func sendMessage(_ message: String) {
+        guard let data = message.data(using: .utf8) else {
+            print("Error: Unable to encode message to Data")
+            return
+        }
+
+        connection?.send(content: data, completion: .contentProcessed({ error in
+            if let error = error {
+                print("Error: Message sending failed with error \(error)")
+                return
+            }
+            print("Message successfully sent")
+        }))
+    }
+
     func stopConnection() {
         connection?.cancel()
     }

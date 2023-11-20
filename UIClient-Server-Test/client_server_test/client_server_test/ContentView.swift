@@ -27,10 +27,18 @@ struct ContentView: View {
                 viewModel.startConnection(host: host, portString: port)
             }
             .padding()
+            Button("Send Message") {
+                if viewModel.isConnected {
+                    viewModel.sendMessage("Hello12345")
+                } else {
+                    print("Not Connected")
+                }            }
+            .padding()
+
             
-            NavigationLink(destination: ConnectedView(), isActive: $viewModel.isConnected) {
-                EmptyView()
-            }
+//            NavigationLink(destination: ConnectedView(), isActive: $viewModel.isConnected) {
+//                EmptyView()
+//            }
         }
     }
 }
