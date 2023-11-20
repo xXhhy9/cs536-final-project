@@ -8,19 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = ContentViewViewModel()
+    @State private var host = ""
+    @State private var port = ""
+    @ObservedObject var viewModel = ContentViewViewModel()
+
     var body: some View {
         VStack {
-            Form {
-                TextField("IP", text: viewModel.$ip)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                TextField("Port", text:viewModel.$port)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            TextField("Enter Host", text: $host)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("Enter Port", text: $port)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.numberPad)
+                .padding()
+
+            Button("Connect") {
+                viewModel.startConnection(host: host, portString: port)
             }
+            .padding()
         }
-        .padding()
     }
 }
+
 
 #Preview {
     ContentView()

@@ -4,45 +4,38 @@
 //
 //  Created by Jim Ning on 11/20/23.
 //
-import NIO
+import Network
 import Foundation
 
 class ContentViewViewModel: ObservableObject {
-    private let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-    private let channel: Channel?
-    @Published var ip: String
-    @Published var port
-    
-    init() {}
-    
-    func connect(host: String, port: Int) {
-        do {
-            let boostrap = ClientBootstrap(group: group)
-                .channelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
-                .channelInitializer { channel in
-                    channel.pipline.addHandler(MyDataHandler())
-                }
-            channel = try bootstrap.connect(host: host, port: port).wait()
-        } catch {
-            print("Failed to connect: \(error)")
-        }
-    }
-    
-    func disconnect() {
-        do {
-            try channel?.close().wait()
-        } catch {
-            print("Error occurred while closing channel :\(error)")
-        }
-    }
-}
-class MyDataHandler: ChannelInboundHandler {
-    typealias InboundIn = ByteBuffer
+    private var connection: NWConnection?
 
-    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        var byteBuffer = self.unwrapInboundIn(data)
-        if let receivedString = byteBuffer.readString(length: byteBuffer.readableBytes) {
-            print("Received: \(receivedString)")
+    func startConnection(host: String, portString: String) {
+        guard let port = UInt16(portString) else {
+            print("Invalid port")
+            return
         }
+
+        let parameters = NWParameters(tls: NWProtocolTLS.Options())
+        let tlsOptions = parameters.defaultProtocolStack.applicationProtocols.first as! NWProtocolTLS.Options
+        sec_protocol_options_set_verify_block(tlsOptions.securityProtocolOptions, { _, _, _ in true }, DispatchQueue.main)
+        connection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(rawValue: port)!, using: parameters)
+
+        connection?.stateUpdateHandler = { state in
+            switch state {
+            case .ready:
+                print("Connected to \(host)")
+            case .failed(let error):
+                print("Failed to connect: \(error)")
+            default:
+                break
+            }
+        }
+
+        connection?.start(queue: .global())
+    }
+
+    func stopConnection() {
+        connection?.cancel()
     }
 }
