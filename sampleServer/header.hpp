@@ -22,12 +22,10 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-
-
 using namespace std;
 
 // server global constant
-const string apiKey = "Authorization: Bearer <replace the key>"; 
+const string apiKey = "Authorization: Bearer "; 
 const string instruction = "Default";
 const string text_request = "Content-Type: application/json";
 const float temperature =  0.5;
@@ -37,13 +35,21 @@ const unsigned short max_toks = 500;
 string callChatGPT(const string& new_query);
 string speechtoText(const string& path);
 
-// Structures
-struct ClientThreadArgs {
-    int sockfd;
-    sockaddr_in server;
-};
+// socket type
+#ifdef USE_TLS
+#include "tls.hpp"
+typedef tls_socket socket_t;
+typedef tls_acceptor acceptor;
+#else
+#include "tcp.hpp"
+typedef tcp_socket socket_t;
+typedef tcp_acceptor acceptor;
+#endif
 
-struct MessageHeader {
-    uint8_t type;  // 1 for text, 2 for audio -> mp3 file
-    unsigned int length;  // length of the following message
-};
+int socket_read(socket_t *socket, std::vector<char>& buf);
+int socket_write(socket_t *socket, const std::string& str);
+int close_socket(socket_t *socket);
+
+acceptor *create_socket_acceptor(int port);
+socket_t *accept_connection(acceptor *socket_acceptor);
+int close_socket_acceptor(acceptor* socket_acceptor);

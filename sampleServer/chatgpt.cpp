@@ -27,9 +27,9 @@ string callChatGPT(const string& new_query) {
         headers = curl_slist_append(headers, text_request.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, new_query.c_str());
-
+        cout << "Post data set: " << new_query << endl;
         res = curl_easy_perform(curl);
-
+        cout << readBuffer << endl;
         if(res != CURLE_OK) {
             cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
         }

@@ -12,14 +12,11 @@
 #include <unistd.h>
 #include <sstream>
 #include <fstream>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
 
 using namespace std;
-
-struct MessageHeader {
-    int type;  // 1 for text, 2 for audio
-    int length;  // length of the following message
-};
 
 int main(int argc, char const* argv[]) {
     int clientSocket;
@@ -51,54 +48,25 @@ int main(int argc, char const* argv[]) {
 
 
     while (true) {
-        cout << "Choose an option:\n1. Send Text\n2. Send Audio\n3. Exit\n";
-        int choice;
-        cin >> choice;
+        // Text query
+        cout << "Enter query: ";
+        string query;
+        getline(cin, query);
+        if (query == "exit") break;
 
-        stringstream ss;
-        if (choice == 1) {
-            // Text query
-            cout << "Enter query: ";
-            string query;
-            getline(cin, query);
-            if (query == "exit") break;
-            // Step 1: send request header
-            MessageHeader header{1, (int)query.size()};
-            write(clientSocket, &header, sizeof(header));
-
-            // Step 2: send query
-            write(clientSocket, query.c_str(), query.size());
-
-        } else if (choice == 2) {
-            //audio file 
-            ifstream audioFile("<Replace with audio file directory>", ios::binary | ios::ate);
-            streamsize size = audioFile.tellg();
-            audioFile.seekg(0, ios::beg);
-
-            char* buffer = new char[size];
-            if (audioFile.read(buffer, size)) {
-                MessageHeader header{2, (int)size};
-                write(clientSocket, &header, sizeof(header));
-                write(clientSocket, buffer, size);
-            }
-            delete[] buffer;
-            audioFile.close();
-        } else if (choice == 3) {
-            break;
-        } else {
-            cout << "invalid input" << endl;
-            continue;
-        }
+        write(clientSocket, query.c_str(), query.size());
         
         char buffer[4096];
+        stringstream ss;
         while (true) {
             memset(buffer, 0, sizeof(buffer));
             ssize_t bytes_received = read(clientSocket, buffer, sizeof(buffer) - 1);
             if (bytes_received <= 0) {
                 break;
             }
+
             ss.write(buffer, bytes_received);
-            if (buffer[bytes_received - 1] == '\n' || buffer[bytes_received - 1] == '\0') {
+            if (bytes_received < 4096) {
                 break;
             }
         }
