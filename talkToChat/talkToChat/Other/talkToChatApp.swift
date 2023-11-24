@@ -18,7 +18,8 @@ struct talkToChatApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            MainView()
+//            MainView()
+            ChatLogView()
         }
     }
 }

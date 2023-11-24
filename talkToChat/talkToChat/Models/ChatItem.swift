@@ -6,3 +6,13 @@
 //
 
 import Foundation
+struct ChatItem : Decodable, Identifiable {
+    let id: UUID
+    let uid: String
+    let text: String
+    let createdAt: Date
+    
+    func isFromCurrentUser() -> Bool{
+        return false
+    }
+}

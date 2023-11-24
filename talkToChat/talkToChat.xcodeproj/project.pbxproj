@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F1E9D462B100ED7001C1528 /* ChatLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1E9D452B100ED7001C1528 /* ChatLogViewModel.swift */; };
+		5F1E9D482B104D38001C1528 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1E9D472B104D38001C1528 /* SpeechRecognizer.swift */; };
 		D18484E72B0457A800A061A8 /* NetworkPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */; };
 		D191AAF72B03D989004B8656 /* talkToChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF62B03D989004B8656 /* talkToChatApp.swift */; };
 		D191AAF92B03D989004B8656 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF82B03D989004B8656 /* MainView.swift */; };
@@ -63,6 +65,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5F1E9D452B100ED7001C1528 /* ChatLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogViewModel.swift; sourceTree = "<group>"; };
+		5F1E9D472B104D38001C1528 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		5F1E9D492B104E1B001C1528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPerformanceView.swift; sourceTree = "<group>"; };
 		D191AAF32B03D989004B8656 /* talkToChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talkToChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D191AAF62B03D989004B8656 /* talkToChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = talkToChatApp.swift; sourceTree = "<group>"; };
@@ -152,6 +157,7 @@
 		D191AAF52B03D989004B8656 /* talkToChat */ = {
 			isa = PBXGroup;
 			children = (
+				5F1E9D492B104E1B001C1528 /* Info.plist */,
 				D191AB2D2B03DE42004B8656 /* Other */,
 				D191AB2C2B03DE3D004B8656 /* Models */,
 				D191AB2B2B03DE22004B8656 /* ViewModels */,
@@ -211,6 +217,7 @@
 				D191AB432B03E0F8004B8656 /* MainViewViewModel.swift */,
 				D191AB452B03E101004B8656 /* LoginViewViewModel.swift */,
 				D191AB472B03E10B004B8656 /* RegisterViewViewModel.swift */,
+				5F1E9D452B100ED7001C1528 /* ChatLogViewModel.swift */,
 				D191AB492B03E115004B8656 /* ChatLogViewViewModel.swift */,
 				D191AB4B2B03E128004B8656 /* ChatItemViewViewModel.swift */,
 				D191AB4D2B03E136004B8656 /* NetworkViewViewModel.swift */,
@@ -239,6 +246,7 @@
 				D191AAFA2B03D98A004B8656 /* Assets.xcassets */,
 				D191AB272B03DC2D004B8656 /* GoogleService-Info.plist */,
 				D191AB5B2B04440A004B8656 /* Extensions.swift */,
+				5F1E9D472B104D38001C1528 /* SpeechRecognizer.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -393,6 +401,7 @@
 				D191AB422B03E0CD004B8656 /* NetworkItem.swift in Sources */,
 				D1AB16EB2B04517600166755 /* ProfileView.swift in Sources */,
 				D191AB4E2B03E136004B8656 /* NetworkViewViewModel.swift in Sources */,
+				5F1E9D462B100ED7001C1528 /* ChatLogViewModel.swift in Sources */,
 				D191AB522B03E513004B8656 /* HeaderView.swift in Sources */,
 				D191AB582B03ED2A004B8656 /* NetworkParameters.swift in Sources */,
 				D191AB362B03E041004B8656 /* ChatItem.swift in Sources */,
@@ -408,6 +417,7 @@
 				D191AB4C2B03E128004B8656 /* ChatItemViewViewModel.swift in Sources */,
 				D191AB342B03DFDE004B8656 /* User.swift in Sources */,
 				D191AB302B03DF42004B8656 /* LoginView.swift in Sources */,
+				5F1E9D482B104D38001C1528 /* SpeechRecognizer.swift in Sources */,
 				D191AB3A2B03E06E004B8656 /* ChatItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,13 +582,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"talkToChat/Preview Content\"";
+				DEVELOPMENT_TEAM = XRN6V3C7F8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = talkToChat/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Talk To Chat";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -600,13 +615,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"talkToChat/Preview Content\"";
+				DEVELOPMENT_TEAM = XRN6V3C7F8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = talkToChat/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Talk To Chat";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
