@@ -9,13 +9,11 @@
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
 
 // Function to call the ChatGPT API
-string callChatGPT(const string& new_query) {
+int callChatGPT(const string& new_query, string& message) {
     CURL* curl;
     CURLcode res;
     string readBuffer;
-    
     curl = curl_easy_init();
-
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, "https://api.openai.com/v1/chat/completions");
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
@@ -27,27 +25,30 @@ string callChatGPT(const string& new_query) {
         headers = curl_slist_append(headers, text_request.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, new_query.c_str());
-        cout << "Post data set: " << new_query << endl;
         res = curl_easy_perform(curl);
-        cout << readBuffer << endl;
         if(res != CURLE_OK) {
             cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
+            return -1;
         }
+
+        cout << readBuffer << endl;
 
         auto jsonResponse = nlohmann::json::parse(readBuffer);
         auto choices = jsonResponse["choices"];
 
-        string message = "";
-        if (!choices.empty()) {
+        if (!choices[0]["message"]["content"].empty()) {
+            message = "";
             message = choices[0]["message"]["content"];
+        } else {
+            return -1;
         }
 
         // Cleanup
         curl_easy_cleanup(curl);
-        return message;
+        return message.length();
     }
 
-    return readBuffer;
+    return -1;
 }
 
 string speechtoText (const string& path) {

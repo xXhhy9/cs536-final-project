@@ -13,28 +13,28 @@ inline string buildPostRequest(const string& new_query);
 thread_local vector<pair<string, string>> history;
 
 void handle_client(socket_t *clientSocket) {
-    
+    size_t DDOS = 0;
     while (true) {
         vector<char> buffer(4096);
-        
-        int read_bytes;
-        if (socket_read(clientSocket, buffer) < 0) {
+        int read_res = socket_read(clientSocket, buffer);
+        if (read_res < 0) {
             cerr << "Read Socket Error" << endl;
             break;
-        }
-
-        if (socket_read(clientSocket, buffer) == 0) {
-            break;
-        }
+        } else if (read_res == 0) break;
 
         // handle incoming question.
         auto null_pos = std::find(buffer.begin(), buffer.end(), '\0');
         string new_question(buffer.begin(), null_pos);
-        cout << new_question.length() << endl;
+        cout << new_question << endl;
+
         string query = buildPostRequest(new_question);
-        cout << query << endl;
-        fflush(stdout);
-        string response = callChatGPT(query);
+        string response;
+        int api_res = callChatGPT(query, response);
+        if (api_res < 0) {
+            cout << "API error" << endl;
+            response = "CHATGPT API ERROR";
+            DDOS++;
+        } else DDOS = 0;
 
         cout << response << endl;
         cout.flush();
@@ -44,6 +44,7 @@ void handle_client(socket_t *clientSocket) {
             break;
         }
         history.push_back(make_pair(new_question, response));
+        if (DDOS >= 3) break;
     }
 
     close_socket(clientSocket);

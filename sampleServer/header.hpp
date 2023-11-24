@@ -25,14 +25,14 @@
 using namespace std;
 
 // server global constant
-const string apiKey = "Authorization: Bearer "; 
+const string apiKey = "Authorization: Bearer sk-"; 
 const string instruction = "Default";
 const string text_request = "Content-Type: application/json";
 const float temperature =  0.5;
 const unsigned short max_toks = 500;
 
 // api function calls
-string callChatGPT(const string& new_query);
+int callChatGPT(const string& new_query, string& message);
 string speechtoText(const string& path);
 
 // socket type
