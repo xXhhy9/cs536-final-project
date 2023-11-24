@@ -45,8 +45,6 @@ void handle_client(socket_t *clientSocket) {
             break;
         }
 
-        response = escapeJSON(response);
-
         if (api_res > 0) {history.push_back(make_pair(new_question, response));}
         if (DDOS >= 3) break;
     }
