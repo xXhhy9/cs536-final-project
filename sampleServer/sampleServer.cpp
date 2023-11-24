@@ -9,6 +9,7 @@
 using namespace std;
 
 inline string buildPostRequest(const string& new_query);
+string escapeJSON(const string &s);
 
 thread_local vector<pair<string, string>> history;
 
@@ -25,7 +26,7 @@ void handle_client(socket_t *clientSocket) {
         // handle incoming question.
         auto null_pos = std::find(buffer.begin(), buffer.end(), '\0');
         string new_question(buffer.begin(), null_pos);
-        cout << new_question << endl;
+        cout << new_question << "   |   new query length" << new_question.size() << endl;
 
         string query = buildPostRequest(new_question);
         string response;
@@ -38,12 +39,15 @@ void handle_client(socket_t *clientSocket) {
 
         cout << response << endl;
         cout.flush();
-        //TODO: handle empty request
+
         if (socket_write(clientSocket, response) < 0) {
             cerr << "Write Socket Error" << endl;
             break;
         }
-        history.push_back(make_pair(new_question, response));
+
+        response = escapeJSON(response);
+
+        if (api_res > 0) {history.push_back(make_pair(new_question, response));}
         if (DDOS >= 3) break;
     }
 
@@ -51,17 +55,35 @@ void handle_client(socket_t *clientSocket) {
 }
 
 inline string buildPostRequest(const string& new_query) {
-    // Updated POST data format
-    string postData = "{\"role\": \"system\", \"content\": \"" + instruction + "\"}, ";
-    for (auto & conversation: history) {
-        postData += "{\"role\": \"user\", \"content\": \"" + conversation.first + "\"},";
-        postData += "{\"role\": \"assistant\", \"content\": \"" + conversation.second + "\"},";
+    string postData = "";
+    for (const auto & conversation : history) {
+        postData += "{\"role\": \"user\", \"content\": \"" + escapeJSON(conversation.first) + "\"},";
+        postData += "{\"role\": \"assistant\", \"content\": \"" + escapeJSON(conversation.second) + "\"},";
     }
 
-    postData += "{\"role\": \"user\", \"content\": \"" + new_query + "\"}";
-    string pack = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [" + postData +"], \"temperature\": " + to_string(temperature) +"}";
+    postData += "{\"role\": \"user\", \"content\": \"" + escapeJSON(new_query) + "\"}";
+    string pack = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [" + postData + "], \"temperature\": " + to_string(temperature) + "}";
     return pack;
 }
+
+string escapeJSON(const string &s) {
+    ostringstream escaped;
+    for (char c : s) {
+        switch (c) {
+            case '\"': escaped << "\\\""; break;
+            case '\\': escaped << "\\\\"; break;
+            case '/':  escaped << "\\/";  break;
+            case '\b': escaped << "\\b";  break;
+            case '\f': escaped << "\\f";  break;
+            case '\n': escaped << "\\n";  break;
+            case '\r': escaped << "\\r";  break;
+            case '\t': escaped << "\\t";  break;
+            default: escaped << c;
+        }
+    }
+    return escaped.str();
+}
+
 
 void accept_clients(acceptor* s_acceptor) {    
     while (1) {

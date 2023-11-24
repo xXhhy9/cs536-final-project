@@ -21,11 +21,12 @@
 #include <ctype.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
 // server global constant
-const string apiKey = "Authorization: Bearer sk-"; 
+const string apiKey = "Authorization: Bearer "; 
 const string instruction = "Default";
 const string text_request = "Content-Type: application/json";
 const float temperature =  0.5;

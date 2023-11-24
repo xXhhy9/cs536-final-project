@@ -25,6 +25,7 @@ int callChatGPT(const string& new_query, string& message) {
         headers = curl_slist_append(headers, text_request.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, new_query.c_str());
+        cout << new_query << endl;
         res = curl_easy_perform(curl);
         if(res != CURLE_OK) {
             cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
