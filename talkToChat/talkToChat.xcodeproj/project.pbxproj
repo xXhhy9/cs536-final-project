@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D12CFB882B118D0F0061C634 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = D12CFB872B118D0F0061C634 /* certificate.cer */; };
+		D12CFB8A2B11BC930061C634 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = D12CFB892B11BC930061C634 /* certificate.cer */; };
 		D18484E72B0457A800A061A8 /* NetworkPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */; };
 		D191AAF72B03D989004B8656 /* talkToChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF62B03D989004B8656 /* talkToChatApp.swift */; };
 		D191AAF92B03D989004B8656 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF82B03D989004B8656 /* MainView.swift */; };
@@ -64,7 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D12CFB872B118D0F0061C634 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = certificate.cer; path = talkToChat/Other/certificate.cer; sourceTree = SOURCE_ROOT; };
+		D12CFB892B11BC930061C634 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = certificate.cer; sourceTree = "<group>"; };
 		D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPerformanceView.swift; sourceTree = "<group>"; };
 		D191AAF32B03D989004B8656 /* talkToChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talkToChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D191AAF62B03D989004B8656 /* talkToChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = talkToChatApp.swift; sourceTree = "<group>"; };
@@ -237,9 +237,9 @@
 		D191AB2D2B03DE42004B8656 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				D12CFB892B11BC930061C634 /* certificate.cer */,
 				D191AAF62B03D989004B8656 /* talkToChatApp.swift */,
 				D191AAFA2B03D98A004B8656 /* Assets.xcassets */,
-				D12CFB872B118D0F0061C634 /* certificate.cer */,
 				D191AB272B03DC2D004B8656 /* GoogleService-Info.plist */,
 				D191AB5B2B04440A004B8656 /* Extensions.swift */,
 			);
@@ -360,7 +360,7 @@
 			files = (
 				D191AAFE2B03D98A004B8656 /* Preview Assets.xcassets in Resources */,
 				D191AAFB2B03D98A004B8656 /* Assets.xcassets in Resources */,
-				D12CFB882B118D0F0061C634 /* certificate.cer in Resources */,
+				D12CFB8A2B11BC930061C634 /* certificate.cer in Resources */,
 				D191AB282B03DC2D004B8656 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
