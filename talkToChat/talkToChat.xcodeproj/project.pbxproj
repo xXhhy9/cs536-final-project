@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D12CFB8A2B11BC930061C634 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = D12CFB892B11BC930061C634 /* certificate.cer */; };
+		D12CFB8C2B11CF190061C634 /* ChatLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12CFB8B2B11CF190061C634 /* ChatLogViewModel.swift */; };
+		D12CFB8E2B11CFE50061C634 /* SpeachRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12CFB8D2B11CFE50061C634 /* SpeachRecognizer.swift */; };
 		D18484E72B0457A800A061A8 /* NetworkPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */; };
 		D191AAF72B03D989004B8656 /* talkToChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF62B03D989004B8656 /* talkToChatApp.swift */; };
 		D191AAF92B03D989004B8656 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D191AAF82B03D989004B8656 /* MainView.swift */; };
@@ -65,6 +67,8 @@
 
 /* Begin PBXFileReference section */
 		D12CFB892B11BC930061C634 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = certificate.cer; sourceTree = "<group>"; };
+		D12CFB8B2B11CF190061C634 /* ChatLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogViewModel.swift; sourceTree = "<group>"; };
+		D12CFB8D2B11CFE50061C634 /* SpeachRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeachRecognizer.swift; sourceTree = "<group>"; };
 		D18484E62B0457A800A061A8 /* NetworkPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPerformanceView.swift; sourceTree = "<group>"; };
 		D191AAF32B03D989004B8656 /* talkToChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talkToChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D191AAF62B03D989004B8656 /* talkToChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = talkToChatApp.swift; sourceTree = "<group>"; };
@@ -219,6 +223,7 @@
 				D191AB4F2B03E14A004B8656 /* NetworkItemViewViewModel.swift */,
 				D191AB552B03ED1A004B8656 /* NetworkInputViewViewModel.swift */,
 				D1AB16EC2B04563700166755 /* ProfileViewViewModel.swift */,
+				D12CFB8B2B11CF190061C634 /* ChatLogViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -238,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				D12CFB892B11BC930061C634 /* certificate.cer */,
+				D12CFB8D2B11CFE50061C634 /* SpeachRecognizer.swift */,
 				D191AAF62B03D989004B8656 /* talkToChatApp.swift */,
 				D191AAFA2B03D98A004B8656 /* Assets.xcassets */,
 				D191AB272B03DC2D004B8656 /* GoogleService-Info.plist */,
@@ -390,6 +396,7 @@
 				D191AB322B03DF91004B8656 /* RegisterView.swift in Sources */,
 				D18484E72B0457A800A061A8 /* NetworkPerformanceView.swift in Sources */,
 				D191AB542B03ED00004B8656 /* NetworkInputView.swift in Sources */,
+				D12CFB8E2B11CFE50061C634 /* SpeachRecognizer.swift in Sources */,
 				D1AB16ED2B04563700166755 /* ProfileViewViewModel.swift in Sources */,
 				D191AB442B03E0F8004B8656 /* MainViewViewModel.swift in Sources */,
 				D191AB5A2B03FF3F004B8656 /* TTCButton.swift in Sources */,
@@ -397,6 +404,7 @@
 				D191AB422B03E0CD004B8656 /* NetworkItem.swift in Sources */,
 				D1AB16EB2B04517600166755 /* ProfileView.swift in Sources */,
 				D191AB4E2B03E136004B8656 /* NetworkViewViewModel.swift in Sources */,
+				D12CFB8C2B11CF190061C634 /* ChatLogViewModel.swift in Sources */,
 				D191AB522B03E513004B8656 /* HeaderView.swift in Sources */,
 				D191AB582B03ED2A004B8656 /* NetworkParameters.swift in Sources */,
 				D191AB362B03E041004B8656 /* ChatItem.swift in Sources */,

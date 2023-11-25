@@ -15,6 +15,7 @@ class NetworkInputViewViewModel: ObservableObject {
     @Published var isConnected: Bool = false
     @Published var errorMessage = ""
     @Published var successMessage = ""
+    @Published var gptResponse = ""
     init(tls: Bool) {
         self.tlsEnabled = tls
     }
@@ -49,7 +50,7 @@ class NetworkInputViewViewModel: ObservableObject {
                     self?.isConnected = true
                 }
                 //self?.receiveData()
-                self?.promptAndSend()
+//                self?.promptAndSend()
             case .failed(let error):
                 self?.errorMessage = "Failed to connect: \(error)"
                 exit(1)
@@ -96,16 +97,17 @@ class NetworkInputViewViewModel: ObservableObject {
     }
 
     // Client Operations
-    private func promptAndSend() {
-        print("Enter query: ", terminator: "")
-        if let query = readLine(), query != "exit" {
+    func promptAndSend(input: String) {
+//        print("Enter query: ", terminator: "")
+        let query = input
+        if query != "exit" {
             sendData(Data(query.utf8))
         } else {
             stopConnection()
         }
     }
 
-    func sendData(_ data: Data) {
+    func sendData (_ data: Data) {
         connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             if let error = error {
                 print("Send error: \(error)")
@@ -116,7 +118,7 @@ class NetworkInputViewViewModel: ObservableObject {
         }))
     }
 
-    private func receiveData() {
+    func receiveData() {
         connection?.receive(minimumIncompleteLength: 1, maximumLength: 4096) { [weak self] data, _, isComplete, error in
             guard let data = data, !data.isEmpty else {
                 print("No data received or connection closed.")
@@ -126,16 +128,17 @@ class NetworkInputViewViewModel: ObservableObject {
 
             if let message = String(data: data, encoding: .utf8) {
                 print("Received message: \(message)")
+                self?.gptResponse = message
             }
 
             if isComplete || error != nil {
                 self?.stopConnection()
-            } else {
-                self?.promptAndSend()
-            }
+            } 
+//            else {
+//                self?.promptAndSend(input:
+//            }
         }
     }
-
     func stopConnection() {
         print("Disconnecting...")
         connection?.cancel()

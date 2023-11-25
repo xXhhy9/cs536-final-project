@@ -7,12 +7,31 @@
 
 import SwiftUI
 
-struct ChatItemView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
 
-#Preview {
-    ChatItemView()
+struct ChatItemView: View {
+    var message: ChatItem
+   
+    var body: some View {
+        if message.userMsg == 1{
+            
+            HStack{
+                Spacer()
+                Text(message.text).foregroundColor(.white ).padding().background(.blue).cornerRadius(16)
+                Image(systemName: "person")
+            }
+            
+            
+        }
+        
+        
+        if message.userMsg == 0{
+            HStack{
+                Image(systemName: "person")
+                Text(message.text).foregroundColor( .black).padding().background(.gray.opacity(0.1)).cornerRadius(16)
+                Spacer()
+            }
+            
+            
+        }
+    }
 }
