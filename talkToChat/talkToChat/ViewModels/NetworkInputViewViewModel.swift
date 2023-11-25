@@ -4,16 +4,21 @@
 //
 //  Created by Jim Ning on 11/20/23.
 //
-import Network
+
 import Foundation
+import Network
 import Security
-import UIKit
 
 class NetworkInputViewViewModel: ObservableObject {
     private var connection: NWConnection?
+    private var tlsEnabled: Bool
     @Published var isConnected: Bool = false
     @Published var errorMessage = ""
     @Published var successMessage = ""
+    init(tls: Bool) {
+        self.tlsEnabled = tls
+    }
+
     func startConnection(host: String, portString: String) {
         errorMessage = ""
         successMessage = ""
@@ -26,70 +31,114 @@ class NetworkInputViewViewModel: ObservableObject {
             errorMessage = "Invalid Port"
             return
         }
-        
-
-        let parameters = NWParameters(tls: NWProtocolTLS.Options())
-        let tlsOptions = parameters.defaultProtocolStack.applicationProtocols.first as! NWProtocolTLS.Options
-                sec_protocol_options_set_verify_block(tlsOptions.securityProtocolOptions, { sec_protocol_metadata, sec_trust, sec_protocol_verify_complete in
-                    
-                    // Load the local certificate
-                    guard let localCertificate = self.loadCertificate(named: "certificate") else {
-                        sec_protocol_verify_complete(false)
-                        return
-                    }
-
-                    // Evaluate the server's trust and compare it with the local certificate
-                    let serverCertificatesMatch = self.evaluateServerTrust(sec_trust, against: localCertificate)
-                    sec_protocol_verify_complete(serverCertificatesMatch)
-
-                }, DispatchQueue.main)
+        let parameters: NWParameters
+        if tlsEnabled {
+            parameters = NWParameters(tls: NWProtocolTLS.Options())
+            configureTLS(parameters: parameters)
+        } else {
+            parameters = NWParameters.tcp
+        }
 
         connection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(rawValue: port)!, using: parameters)
 
-        connection?.stateUpdateHandler = { state in
+        connection?.stateUpdateHandler = { [weak self] state in
             switch state {
             case .ready:
-                self.successMessage = "Connected to \(host)"
+                self?.successMessage = "Connected to \(host)"
                 DispatchQueue.main.async {
-                    self.isConnected = true
+                    self?.isConnected = true
                 }
+                //self?.receiveData()
+                self?.promptAndSend()
             case .failed(let error):
-                self.errorMessage = "Failed to connect"
+                self?.errorMessage = "Failed to connect: \(error)"
+                exit(1)
             default:
                 break
             }
         }
+
         connection?.start(queue: .global())
     }
-    func evaluateServerTrust(_ serverTrust: sec_trust_t, against localCertificate: SecCertificate) -> Bool {
-        // Implement the logic to evaluate the server's trust object against your local certificate
-        // This might involve comparing the public keys, certificate data, etc.
-        return true // return true if the server's certificate matches the local certificate
+
+    private func configureTLS(parameters: NWParameters) {
+        let tlsOptions = parameters.defaultProtocolStack.applicationProtocols.first as! NWProtocolTLS.Options
+
+        sec_protocol_options_set_verify_block(tlsOptions.securityProtocolOptions, { sec_protocol_metadata, sec_trust, sec_protocol_verify_complete in
+            print("Inside verify block...") // Debug print
+
+            guard let localCertificate = self.loadCertificate(named: "certificate") else {
+                print("Failed to load local certificate...") // Debug print
+                sec_protocol_verify_complete(false)
+                self.stopConnection()
+                return
+            }
+
+            print("Local certificate loaded successfully...") // Debug print
+
+            let serverCertificatesMatch = self.evaluateServerTrust(sec_trust, against: localCertificate)
+            sec_protocol_verify_complete(serverCertificatesMatch)
+        }, DispatchQueue.main)
     }
+
+    func evaluateServerTrust(_ serverTrust: sec_trust_t, against localCertificate: SecCertificate) -> Bool {
+        // Implement your logic here
+        return true // Temporarily returning true for simplicity
+    }
+
     func loadCertificate(named name: String) -> SecCertificate? {
-        guard let url = Bundle.main.url(forResource: name, withExtension: "cer"),
-              let data = try? Data(contentsOf: url) else {
+        let fullPath = "/Users/ningj2413/Desktop/CS536/Final Project/cs536-final-project/talkToChat/talkToChat/Other/certificate.cer" // Use the absolute path
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: fullPath)) else {
             return nil
         }
 
         return SecCertificateCreateWithData(nil, data as CFData)
     }
-    func sendMessage(_ message: String) {
-        guard let data = message.data(using: .utf8) else {
-            print("Error: Unable to encode message to Data")
-            return
-        }
 
-        connection?.send(content: data, completion: .contentProcessed({ error in
+    // Client Operations
+    private func promptAndSend() {
+        print("Enter query: ", terminator: "")
+        if let query = readLine(), query != "exit" {
+            sendData(Data(query.utf8))
+        } else {
+            stopConnection()
+        }
+    }
+
+    func sendData(_ data: Data) {
+        connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             if let error = error {
-                print("Error: Message sending failed with error \(error)")
+                print("Send error: \(error)")
                 return
             }
-            print("Message successfully sent")
+            print("Data sent successfully.")
+           self?.receiveData()
         }))
     }
 
+    private func receiveData() {
+        connection?.receive(minimumIncompleteLength: 1, maximumLength: 4096) { [weak self] data, _, isComplete, error in
+            guard let data = data, !data.isEmpty else {
+                print("No data received or connection closed.")
+                self?.stopConnection()
+                return
+            }
+
+            if let message = String(data: data, encoding: .utf8) {
+                print("Received message: \(message)")
+            }
+
+            if isComplete || error != nil {
+                self?.stopConnection()
+            } else {
+                self?.promptAndSend()
+            }
+        }
+    }
+
     func stopConnection() {
+        print("Disconnecting...")
         connection?.cancel()
+        exit(0)
     }
 }

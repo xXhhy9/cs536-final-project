@@ -12,7 +12,7 @@ struct NetworkInputView: View {
     @State private var host = ""
     @State private var port = ""
     @State private var isLoading = false
-    @ObservedObject var viewModel = NetworkInputViewViewModel()
+    @ObservedObject var viewModel = NetworkInputViewViewModel(tls: true)
     @State private var errorMessage = ""
     var body: some View {
         VStack {

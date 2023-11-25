@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatLogView: View {
     @State var chatMessages: [ChatMessage] = ChatMessage.sampleMessages
     @State var messageText: String = ""
-    @ObservedObject var viewModel = NetworkInputViewViewModel()
+    @ObservedObject var viewModel = NetworkInputViewViewModel(tls: true)
     var body: some View {
         VStack{
             ScrollView{
