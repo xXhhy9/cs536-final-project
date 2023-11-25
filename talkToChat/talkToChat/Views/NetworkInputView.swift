@@ -21,10 +21,6 @@ struct NetworkInputView: View {
                 
                 //Login Form
                 Form {
-                    if !viewModel.errorMessage.isEmpty {
-                        Text(viewModel.errorMessage)
-                            .foregroundColor(Color.red)
-                    }
                     TextField("IP", text: $viewModel.ip)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .autocorrectionDisabled()
