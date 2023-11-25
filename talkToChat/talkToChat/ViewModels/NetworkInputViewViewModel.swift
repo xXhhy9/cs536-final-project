@@ -57,7 +57,7 @@ class NetworkInputViewViewModel: ObservableObject {
         return true // return true if the server's certificate matches the local certificate
     }
     func loadCertificate(named name: String) -> SecCertificate? {
-        let fullPath = "/Users/ningj2413/Desktop/CS536/Final Project/cs536-final-project/UIClient-Server-Test/client_server_test/client_server_test/\(name).cer" // Use the absolute path
+        let fullPath = "/Users/ningj2413/Desktop/CS536/Final Project/cs536-final-project/talkToChat/talkToChat/Other/\(name).cer" // Use the absolute path
         guard let data = try? Data(contentsOf: URL(fileURLWithPath: fullPath)) else {
             return nil
         }
