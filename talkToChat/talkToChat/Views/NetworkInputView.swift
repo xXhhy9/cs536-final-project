@@ -35,51 +35,50 @@ struct NetworkInputView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         host = ""
                         port = ""
-                        viewModel.successMessage = ""
+//                        viewModel.successMessage = ""
                     }
                 }
-            }
+            } else {
+                TextField("Enter Host", text: $host)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
 
-            TextField("Enter Host", text: $host)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-
-            TextField("Enter Port", text: $port)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.numberPad)
-                .padding()
-
-            if isLoading {
-                  ProgressView("Connecting...")
-                      .onAppear {
-                          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                              isLoading = false
-                              if !viewModel.isConnected {
-                                  // Show error message
-                                  errorMessage = "Could not connect to \(host)"
+                TextField("Enter Port", text: $port)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.numberPad)
+                    .padding()
+                if isLoading {
+                      ProgressView("Connecting...")
+                          .onAppear {
+                              DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                  isLoading = false
+                                  if !viewModel.isConnected {
+                                      // Show error message
+                                      errorMessage = "Could not connect to \(host)"
+                                  }
                               }
                           }
-                      }
-            } else {
-                Button("Connect") {
-                    viewModel.startConnection(host: host, portString: port)
-                    isLoading = true
-                }
-                .padding()
-           }
-            Button("Send Message") {
-                if viewModel.isConnected {
-                    viewModel.sendMessage("Hello12345")
                 } else {
-                    print("Not Connected")
-                }
+                    Button("Connect") {
+                        viewModel.startConnection(host: host, portString: port)
+                        isLoading = true
+                    }
+                    .padding()
+               }
             }
-            .padding()
-
+            if viewModel.isConnected {
+                ChatLogView(viewModel: viewModel)
+            }
             
-//            NavigationLink(destination: ConnectedView(), isActive: $viewModel.isConnected) {
-//                EmptyView()
+//            Button("Send Message") {
+//                if viewModel.isConnected {
+//                    viewModel.sendMessage("Hello12345")
+//                } else {
+//                    print("Not Connected")
+//                }
 //            }
+//            .padding()
+
         }
     }
 }

@@ -18,10 +18,6 @@ struct MainView: View {
                     .tabItem {
                         Label("Network Settings", systemImage: "gear")
                     }
-                ChatLogView()
-                    .tabItem {
-                        Label("Chat", systemImage: "house")
-                    }
                 NetworkPerformanceView()
                     .tabItem {
                         Label("Network Performance", systemImage:

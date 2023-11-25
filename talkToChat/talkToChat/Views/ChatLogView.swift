@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatLogView: View {
     @State var chatMessages: [ChatMessage] = ChatMessage.sampleMessages
     @State var messageText: String = ""
+    @ObservedObject var viewModel = NetworkInputViewViewModel()
     var body: some View {
         VStack{
             ScrollView{
@@ -18,6 +19,9 @@ struct ChatLogView: View {
                         messageView(message: message)
                     }
                 }
+            }
+            if !viewModel.successMessage.isEmpty {
+                Text(viewModel.successMessage)
             }
             HStack{
                 TextField("Enter a message", text: $messageText).padding().background(.gray.opacity(0.1)).cornerRadius(12)
