@@ -10,9 +10,13 @@ import SwiftUI
 
 
 struct ChatLogView: View{
+    // ChatLogViewModel which stores all the messages for convo between user and chatgpt.
     @StateObject var chatLogViewModel = ChatLogViewModel()
+    // speechRecognizer is the audio workings behind the
     @StateObject var speechRecognizer = SpeechRecognizer()
+    // variable keeps track whether to record or not. toggled based on microphone button.
     @State private var isRecording = false
+    // this is the text that is in the textfield
     @State var text = ""
     var body: some View{
         VStack{
@@ -49,22 +53,24 @@ struct ChatLogView: View{
                     
                 }
                 Button{
+                    // request will not send if less than two characters
                     if text.count > 2 {
-                        chatLogViewModel.sendMessage(text: text)
+                        // this is the message that the uesr sends with from value as 1
+                        chatLogViewModel.sendMessage(text: text, from: 1)
                         text = ""
+                        // this is the holder message that chatgpt will respond with with from value as 0
+                        chatLogViewModel.sendMessage(text: "Responce from chatgpt", from: 0)
                     }
                    
                 } label: {
                     Text("Send").padding().background(.blue).foregroundColor(.white).cornerRadius(18)
-                }.padding([.bottom, .top, .trailing])
+                }.padding([.bottom, .top])
             }
             
-        }
+        }.padding()
         
     }
     private func startScrum() {
-    
-            
         speechRecognizer.resetTranscript()
         speechRecognizer.startTranscribing()
         isRecording = true
@@ -72,77 +78,9 @@ struct ChatLogView: View{
     }
     
     private func endScrum() -> String {
-        
         speechRecognizer.stopTranscribing()
         isRecording = false
+        // speechRecognizer.transcript is the text collected through the users recording. 
         return speechRecognizer.transcript
-      
     }
 }
-//struct ChatLogView: View {
-//    @State var chatMessages: [ChatMessage] = ChatMessage.sampleMessages
-//    @State var messageText: String = ""
-//    var body: some View {
-//        VStack{
-//            ScrollView{
-//                LazyVStack{
-//                    ForEach(chatMessages, id: \.id){ message in
-//                        messageView(message: message)
-//                    }
-//                }
-//            }
-//            HStack{
-//                TextField("Enter a message", text: $messageText).padding().background(.gray.opacity(0.1)).cornerRadius(12)
-//                Button{} label: {
-//                    Text("Send").foregroundColor(.white).padding().background(.black).cornerRadius(12)
-//                }
-//            }
-//        }.padding()
-//        
-//        
-//    }
-//    
-//    func messageView(message: ChatMessage) -> some View{
-//        HStack{
-//            if message.sender == .user{
-//                Spacer()
-//                Text(message.content).foregroundColor(message.sender == .user ? .white : .black).padding().background(message.sender == .user ? .blue : .gray.opacity(0.1)).cornerRadius(16)
-//                Circle().frame(width:40)
-//                
-//            }
-//            
-//            
-//            if message.sender == .chatgpt{
-//                HStack{
-//                    Circle().frame(width:40)
-//                    Text(message.content).foregroundColor(message.sender == .user ? .white : .black).padding().background(message.sender == .user ? .blue : .gray.opacity(0.1)).cornerRadius(16)
-//                }
-//                
-//                Spacer()
-//            }
-//        }
-//        
-//    }
-//}
-//
-//struct ChatMessage {
-//    let id: String
-//    let content: String
-//    let date: Date
-//    let sender: MessageSender
-//}
-//enum MessageSender{
-//    case user
-//    case chatgpt
-//}
-//
-//extension ChatMessage{
-//    static let sampleMessages = [
-//    ChatMessage(id: UUID().uuidString, content: "Hello, this is chatgpt. Ask me anything!", date: Date(), sender: .chatgpt),
-//     ChatMessage(id: UUID().uuidString, content: "QUESTION", date: Date(), sender: .user),
-//    ChatMessage(id: UUID().uuidString, content: "RESPONCE", date: Date(), sender: .chatgpt)
-//    ]
-//}
-//#Preview {
-//    ChatLogView()
-//}

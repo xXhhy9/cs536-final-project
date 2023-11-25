@@ -12,7 +12,7 @@ struct ChatItemView: View {
     var message: ChatItem
    
     var body: some View {
-        if message.isFromCurrentUser() == true{
+        if message.userMsg == 1{
             
             HStack{
                 Spacer()
@@ -24,7 +24,7 @@ struct ChatItemView: View {
         }
         
         
-        if message.isFromCurrentUser() == false{
+        if message.userMsg == 0{
             HStack{
                 Image(systemName: "person")
                 Text(message.text).foregroundColor( .black).padding().background(.gray.opacity(0.1)).cornerRadius(16)
