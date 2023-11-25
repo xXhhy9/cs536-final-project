@@ -7,15 +7,26 @@
 import Network
 import Foundation
 import Security
+import UIKit
 
 class NetworkInputViewViewModel: ObservableObject {
     private var connection: NWConnection?
     @Published var isConnected: Bool = false
+    @Published var errorMessage = ""
+    @Published var successMessage = ""
     func startConnection(host: String, portString: String) {
-        guard let port = UInt16(portString) else {
-            print("Invalid port")
+        errorMessage = ""
+        successMessage = ""
+        guard !host.trimmingCharacters(in: .whitespaces).isEmpty,
+              !portString.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Please fill in all fields"
             return
         }
+        guard let port = UInt16(portString) else {
+            errorMessage = "Invalid Port"
+            return
+        }
+        
 
         let parameters = NWParameters(tls: NWProtocolTLS.Options())
         let tlsOptions = parameters.defaultProtocolStack.applicationProtocols.first as! NWProtocolTLS.Options
@@ -38,14 +49,13 @@ class NetworkInputViewViewModel: ObservableObject {
         connection?.stateUpdateHandler = { state in
             switch state {
             case .ready:
-                print("Connected to \(host)")
+                self.successMessage = "Connected to \(host)"
                 DispatchQueue.main.async {
                     self.isConnected = true
                 }
             case .failed(let error):
-                print("Failed to connect: \(error)")
+                self.errorMessage = "Failed to connect"
             default:
-                print("state: \(state)")
                 break
             }
         }
@@ -57,14 +67,13 @@ class NetworkInputViewViewModel: ObservableObject {
         return true // return true if the server's certificate matches the local certificate
     }
     func loadCertificate(named name: String) -> SecCertificate? {
-        let fullPath = "/Users/ningj2413/Desktop/CS536/Final Project/cs536-final-project/talkToChat/talkToChat/Other/\(name).cer" // Use the absolute path
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: fullPath)) else {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "cer"),
+              let data = try? Data(contentsOf: url) else {
             return nil
         }
 
         return SecCertificateCreateWithData(nil, data as CFData)
     }
-
     func sendMessage(_ message: String) {
         guard let data = message.data(using: .utf8) else {
             print("Error: Unable to encode message to Data")
