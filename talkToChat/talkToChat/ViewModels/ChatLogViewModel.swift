@@ -29,8 +29,6 @@ class ChatLogViewModel: ObservableObject{
             let utterance = AVSpeechUtterance(string: text)
             utterance.voice = AVSpeechSynthesisVoice(identifier: "Samantha")
             utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-            utterance.pitchMultiplier = 1
-            utterance.postUtteranceDelay = 0.2
             utterance.volume = 1
             
             self.synthesizer.speak(utterance)
