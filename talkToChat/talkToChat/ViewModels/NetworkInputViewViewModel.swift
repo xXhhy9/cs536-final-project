@@ -18,6 +18,7 @@ class NetworkInputViewViewModel: ObservableObject {
     @Published var gptResponse = ""
     @Published var sendTimes: [TimeInterval] = []
     @Published var receiveTimes: [TimeInterval] = []
+    private var receiveTimes1: [Date] = []
     init(tls: Bool) {
         self.tlsEnabled = tls
     }
@@ -114,6 +115,11 @@ class NetworkInputViewViewModel: ObservableObject {
         connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             if let error = error {
                 print("Send error: \(error)")
+                let time2 = Date()
+                let difference = time2.timeIntervalSince(time1)
+                DispatchQueue.main.async {
+                    self?.sendTimes.append(difference)
+                }
                 return
             }
             print("Data sent successfully.")
@@ -123,14 +129,14 @@ class NetworkInputViewViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.sendTimes.append(difference)
             }
-
+            let time1 = Date()
+            self?.receiveTimes1.append(time1)
            self?.receiveData()
         }))
     }
 
     func receiveData() {
         connection?.receive(minimumIncompleteLength: 1, maximumLength: 4096) { [weak self] data, _, isComplete, error in
-            let time1 = Date()
             guard let data = data, !data.isEmpty else {
                 print("No data received or connection closed.")
                 self?.stopConnection()
@@ -141,9 +147,11 @@ class NetworkInputViewViewModel: ObservableObject {
                 print("Received message: \(message)")
                 self?.gptResponse = message
                 let time2 = Date()
-                let difference = time2.timeIntervalSince(time1)
-                DispatchQueue.main.async {
-                    self?.receiveTimes.append(difference)
+                if let lastReceiveTime = self?.receiveTimes1.last {
+                    let difference = time2.timeIntervalSince(lastReceiveTime)
+                    DispatchQueue.main.async {
+                        self?.receiveTimes.append(difference)
+                    }
                 }
             }
             if isComplete || error != nil {
@@ -154,6 +162,7 @@ class NetworkInputViewViewModel: ObservableObject {
 //            }
         }
     }
+    
     func stopConnection() {
         print("Disconnecting...")
         connection?.cancel()
