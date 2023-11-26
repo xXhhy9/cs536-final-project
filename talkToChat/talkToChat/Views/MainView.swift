@@ -17,7 +17,7 @@ struct MainView: View {
             TabView {
                 NetworkInputView(viewModel: networkViewModel)
                     .tabItem {
-                        Label("Network Settings", systemImage: "gear")
+                        Label("Chatbot", systemImage: "house")
                     }
                 NetworkPerformanceView(viewModel: networkViewModel)
                     .tabItem {

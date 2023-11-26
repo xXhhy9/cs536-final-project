@@ -25,14 +25,17 @@ class ChatLogViewModel: ObservableObject{
         messages.append(newMessage)
         
         // all extra stuff that text to speech uses
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(identifier: "Smantha")
-        utterance.rate = 0.57
-        utterance.pitchMultiplier = 1
-        utterance.postUtteranceDelay = 0.2
-        utterance.volume = 1
-        
-        self.synthesizer.speak(utterance)
+        if newMessage.userMsg == 0{
+            let utterance = AVSpeechUtterance(string: text)
+            utterance.voice = AVSpeechSynthesisVoice(identifier: "Smantha")
+            utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+            utterance.pitchMultiplier = 1
+            utterance.postUtteranceDelay = 0.2
+            utterance.volume = 1
+            
+            self.synthesizer.speak(utterance)
+        }
+       
         
     }
     

@@ -26,7 +26,7 @@ struct ChatItemView: View {
         
         if message.userMsg == 0{
             HStack{
-                Image(systemName: "person")
+                Image(systemName: "cloud")
                 Text(message.text).foregroundColor( .black).padding().background(.gray.opacity(0.1)).cornerRadius(16)
                 Spacer()
             }
