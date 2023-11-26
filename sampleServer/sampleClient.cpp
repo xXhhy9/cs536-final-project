@@ -54,7 +54,9 @@ int main(int argc, char const* argv[]) {
         getline(cin, query);
         if (query == "exit") break;
 
-        write(clientSocket, query.c_str(), query.size());
+        if (write(clientSocket, query.c_str(), query.size()) < 0) {
+            break;
+        }
         
         char buffer[4096];
         stringstream ss;
@@ -62,7 +64,9 @@ int main(int argc, char const* argv[]) {
             memset(buffer, 0, sizeof(buffer));
             ssize_t bytes_received = read(clientSocket, buffer, sizeof(buffer) - 1);
             if (bytes_received <= 0) {
-                break;
+                cout << "disconnecting......" << endl;
+                close(clientSocket);
+                exit(0);
             }
 
             ss.write(buffer, bytes_received);
