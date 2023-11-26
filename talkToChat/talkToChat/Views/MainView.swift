@@ -17,12 +17,12 @@ struct MainView: View {
             TabView {
                 NetworkInputView(viewModel: networkViewModel)
                     .tabItem {
-                        Label("Chat", systemImage: "house")
+                        Label("Chat", systemImage: "ellipsis.message")
                     }
                 NetworkPerformanceView(viewModel: networkViewModel)
                     .tabItem {
                         Label("Network Performance", systemImage:
-                                "gear")
+                                "chart.bar.xaxis")
                     }
                 ProfileView()
                     .tabItem {
