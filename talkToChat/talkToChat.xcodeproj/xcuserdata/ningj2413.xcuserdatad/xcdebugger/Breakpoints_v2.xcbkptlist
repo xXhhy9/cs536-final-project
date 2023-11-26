@@ -14,10 +14,42 @@
             filePath = "talkToChat/ViewModels/NetworkInputViewViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "startConnection(host:portString:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "83D7851E-4A2F-4D88-84D1-2F561494EC4C - 40b313421ce36811"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "talkToChat.NetworkInputViewViewModel.startConnection(host: Swift.String, portString: Swift.String) -&gt; ()"
+                  moduleName = "talkToChat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ningj2413/Desktop/CS536/Final%20Project/cs536-final-project/talkToChat/talkToChat/ViewModels/NetworkInputViewViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "1308">
+               </Location>
+               <Location
+                  uuid = "83D7851E-4A2F-4D88-84D1-2F561494EC4C - 40b313421ce368df"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "talkToChat.NetworkInputViewViewModel.startConnection(host: Swift.String, portString: Swift.String) -&gt; ()"
+                  moduleName = "talkToChat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ningj2413/Desktop/CS536/Final%20Project/cs536-final-project/talkToChat/talkToChat/ViewModels/NetworkInputViewViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "1308">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

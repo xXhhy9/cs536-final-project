@@ -8,7 +8,6 @@
 import SwiftUI
 
 
-
 struct ChatLogView: View{
     // ChatLogViewModel which stores all the messages for convo between user and chatgpt.
     @StateObject var chatLogViewModel = ChatLogViewModel()
@@ -18,7 +17,6 @@ struct ChatLogView: View{
     @State private var isRecording = false
     // this is the text that is in the textfield
     @State var text = ""
-    
     @ObservedObject var viewModel = NetworkInputViewViewModel(tls: false)
     
     var body: some View{
@@ -38,6 +36,7 @@ struct ChatLogView: View{
                     DispatchQueue.main.asyncAfter(deadline: .now()) {
                         chatLogViewModel.sendMessage(text: viewModel.gptResponse, from: 0)
                         viewModel.gptResponse = ""
+                        text = ""
                     }
                 }
             }

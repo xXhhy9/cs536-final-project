@@ -16,6 +16,8 @@ class NetworkInputViewViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var successMessage = ""
     @Published var gptResponse = ""
+    @Published var sendTimes: [TimeInterval] = []
+    @Published var receiveTimes: [TimeInterval] = []
     init(tls: Bool) {
         self.tlsEnabled = tls
     }
@@ -108,18 +110,27 @@ class NetworkInputViewViewModel: ObservableObject {
     }
 
     func sendData (_ data: Data) {
+        let time1 = Date()
         connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             if let error = error {
                 print("Send error: \(error)")
                 return
             }
             print("Data sent successfully.")
+            let time2 = Date()
+            let difference = time2.timeIntervalSince(time1)
+            
+            DispatchQueue.main.async {
+                self?.sendTimes.append(difference)
+            }
+
            self?.receiveData()
         }))
     }
 
     func receiveData() {
         connection?.receive(minimumIncompleteLength: 1, maximumLength: 4096) { [weak self] data, _, isComplete, error in
+            let time1 = Date()
             guard let data = data, !data.isEmpty else {
                 print("No data received or connection closed.")
                 self?.stopConnection()
@@ -129,8 +140,12 @@ class NetworkInputViewViewModel: ObservableObject {
             if let message = String(data: data, encoding: .utf8) {
                 print("Received message: \(message)")
                 self?.gptResponse = message
+                let time2 = Date()
+                let difference = time2.timeIntervalSince(time1)
+                DispatchQueue.main.async {
+                    self?.receiveTimes.append(difference)
+                }
             }
-
             if isComplete || error != nil {
                 self?.stopConnection()
             } 

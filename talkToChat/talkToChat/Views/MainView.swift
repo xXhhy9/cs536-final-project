@@ -9,16 +9,17 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewModel = MainViewViewModel()
+    @ObservedObject var networkViewModel = NetworkInputViewViewModel(tls: false)
     
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
             //signed in
             TabView {
-                NetworkInputView()
+                NetworkInputView(viewModel: networkViewModel)
                     .tabItem {
                         Label("Network Settings", systemImage: "gear")
                     }
-                NetworkPerformanceView()
+                NetworkPerformanceView(viewModel: networkViewModel)
                     .tabItem {
                         Label("Network Performance", systemImage:
                                 "gear")
