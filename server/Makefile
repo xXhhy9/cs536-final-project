@@ -1,0 +1,33 @@
+# Compiler
+CXX = g++
+
+# Compiler flags
+CXXFLAGS = -Wall -std=c++11 -I /opt/homebrew/Cellar/nlohmann-json/3.11.2/include -I/opt/homebrew/Cellar/openssl@3/3.1.4/include -L/opt/homebrew/Cellar/openssl@3/3.1.4/lib -lssl -lcrypto
+
+# Linker flags
+LDFLAGS = -pthread -lcurl
+
+# Source and Build Directories
+SRC_DIR = src
+BUILD_DIR = build
+
+# Server Source File
+SERVER_SRC = $(SRC_DIR)/server.cpp $(SRC_DIR)/chatgpt.cpp $(SRC_DIR)/socket.cpp $(SRC_DIR)/tcp.cpp $(SRC_DIR)/tls.cpp
+
+# Targets
+all: server_tcp server_tls client
+
+keygen:
+	openssl req -x509 -newkey rsa:4096 -keyout $(BUILD_DIR)/privatekey.pem -out $(BUILD_DIR)/certificate.pem -days 365 -nodes -subj "/C=/ST=/L=/O=/OU=/CN="
+
+server_tls:
+	$(CXX) $(CXXFLAGS) -D USE_TLS $(SERVER_SRC) -o $(BUILD_DIR)/server_tls $(LDFLAGS)
+
+server_tcp:
+	$(CXX) $(CXXFLAGS) $(SERVER_SRC) -o $(BUILD_DIR)/server_tcp $(LDFLAGS)
+
+client: $(SRC_DIR)/sampleClient.cpp
+	$(CXX) $(CXXFLAGS) $^ -o $(BUILD_DIR)/$@
+
+clean:
+	rm -f $(BUILD_DIR)/server_tcp $(BUILD_DIR)/client $(BUILD_DIR)/server_tls $(BUILD_DIR)/certificate.pem $(BUILD_DIR)/privatekey.pem
