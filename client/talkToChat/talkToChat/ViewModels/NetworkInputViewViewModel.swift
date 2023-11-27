@@ -91,8 +91,12 @@ class NetworkInputViewViewModel: ObservableObject {
     }
 
     func loadCertificate(named name: String) -> SecCertificate? {
-        let fullPath = "/Users/ningj2413/Desktop/CS536/Final Project/cs536-final-project/talkToChat/talkToChat/Other/certificate.cer" // Use the absolute path
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: fullPath)) else {
+//        let fullPath = "/Users/ningj2413/Desktop/CS536/Final Project/cs536-final-project/talkToChat/talkToChat/Other/certificate.cer"
+//        guard let data = try? Data(contentsOf: URL(fileURLWithPath: fullPath)) else {
+//            return nil
+//        }
+        guard let url = Bundle.main.url(forResource: name, withExtension: "cer"),
+              let data = try? Data(contentsOf: url) else {
             return nil
         }
 
