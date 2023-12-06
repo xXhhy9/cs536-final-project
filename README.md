@@ -10,10 +10,10 @@
 ### Field Tests
 - Results included in project report:
     - a.	With a single connected client.
-    - b.	With five connected clients simultaneously.
+    - b.	With five clients sending queries concurrently.
     - c.	With ten clients sending queries concurrently.
 # Server compile instruction
-1. An arm64 variant has been compiled and is available in the `/server/build` directory. Should you wish to compile it again, do not forget to place the ChatGPT API key in the `header.hpp` file. We chose not to include the key within the repository to avoid potential unauthorized use of the our own API key.
+1. An arm64 version has been compiled and is available in the `/server/build` directory. Should you wish to compile it again, do not forget to place the ChatGPT API key in the `header.hpp` file. We chose not to include the key within the repository to avoid potential unauthorized use of the our own API key.
 
 2. Makefile
 - Server compilation:
