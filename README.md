@@ -41,6 +41,7 @@ make keygen
 # Client
 
 We are performing tests using iOS versions below 17, as the speech-to-text and text-to-speech APIs have displayed stability issues in iOS 17.
+https://developer.apple.com/forums/thread/738048
 ### 1. Switch between TLS and TCP
 go to `MainView.swift`, and relace the boolean value
 ```
