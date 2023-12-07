@@ -9,7 +9,7 @@
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
 
 // Function to call the ChatGPT API
-int callChatGPT(const string& new_query, string& message) {
+int callChatGPT(const string& new_query, string& message, socket_t *clientSocket) {
     CURL* curl;
     CURLcode res;
     string readBuffer;
@@ -25,14 +25,12 @@ int callChatGPT(const string& new_query, string& message) {
         headers = curl_slist_append(headers, text_request.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, new_query.c_str());
-        cout << new_query << endl;
+
         res = curl_easy_perform(curl);
         if(res != CURLE_OK) {
             cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
             return -1;
         }
-
-        cout << readBuffer << endl;
 
         auto jsonResponse = nlohmann::json::parse(readBuffer);
         auto choices = jsonResponse["choices"];
@@ -40,6 +38,14 @@ int callChatGPT(const string& new_query, string& message) {
         if (!choices[0]["message"]["content"].empty()) {
             message = "";
             message = choices[0]["message"]["content"];
+            auto request_tok = jsonResponse["usage"]["prompt_tokens"];
+            auto res_tok = jsonResponse["usage"]["completion_tokens"];
+            uint16_t request_tok_uint16 = static_cast<uint16_t>(request_tok.get<int>());
+            uint16_t res_tok_uint16 = static_cast<uint16_t>(res_tok.get<int>());
+
+            char *ip = inet_ntoa(clientSocket->addr.sin_addr);
+            uint16_t port = ntohs(clientSocket->addr.sin_port);
+            printf("Client: %s:%d    |   Request Tokens: %d    |   ChatGPT Response Tokens: %d\n", ip, port, request_tok_uint16, res_tok_uint16);
         } else {
             return -1;
         }

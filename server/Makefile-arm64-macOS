@@ -2,10 +2,10 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -std=c++11 -O3 -I /opt/homebrew/Cellar/nlohmann-json/3.11.3/include -I/opt/homebrew/Cellar/openssl@3/3.2.0/include
+CXXFLAGS = -Wall -std=c++11 -O3 -I /opt/homebrew/Cellar/nlohmann-json/3.11.3/include -I/opt/homebrew/Cellar/openssl@3/3.2.0_1/include
 
 # Linker flags
-LDFLAGS = -pthread -lcurl -L/opt/homebrew/Cellar/openssl@3/3.2.0/lib -lssl -lcrypto
+LDFLAGS = -pthread -lcurl -L/opt/homebrew/Cellar/openssl@3/3.2.0_1/lib -lssl -lcrypto
 
 # Source and Build Directories
 SRC_DIR = src

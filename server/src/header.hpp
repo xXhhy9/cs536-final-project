@@ -32,10 +32,6 @@ const string text_request = "Content-Type: application/json";
 const float temperature =  0.5;
 const unsigned short max_toks = 500;
 
-// api function calls
-int callChatGPT(const string& new_query, string& message);
-string speechtoText(const string& path);
-
 // socket type
 #ifdef USE_TLS
 #include "tls.hpp"
@@ -46,6 +42,11 @@ typedef tls_acceptor acceptor;
 typedef tcp_socket socket_t;
 typedef tcp_acceptor acceptor;
 #endif
+
+// api function calls
+int callChatGPT(const string& new_query, string& message, socket_t *clientSocket);
+string speechtoText(const string& path);
+
 
 int socket_read(socket_t *socket, std::vector<char>& buf);
 int socket_write(socket_t *socket, const std::string& str);

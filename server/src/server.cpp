@@ -26,18 +26,17 @@ void handle_client(socket_t *clientSocket) {
         // handle incoming question.
         auto null_pos = std::find(buffer.begin(), buffer.end(), '\0');
         string new_question(buffer.begin(), null_pos);
-        cout << new_question << "   |   new query length" << new_question.size() << endl;
 
         string query = buildPostRequest(new_question);
         string response;
-        int api_res = callChatGPT(query, response);
+        int api_res = callChatGPT(query, response, clientSocket);
         if (api_res < 0) {
             cout << "API error" << endl;
             response = "CHATGPT API ERROR";
             DDOS++;
         } else DDOS = 0;
 
-        cout << response << endl;
+        //cout << response << endl;
         cout.flush();
 
         if (socket_write(clientSocket, response) < 0) {
