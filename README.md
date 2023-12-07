@@ -30,17 +30,17 @@ brew install curl openssl
 - Server compilation:
 ```
 make -f Makefile-arm64-macOS
-
-or 
-
+```
+or
+```
 make -f Makefile-x86-linux
 ```
 - TLS key Generation (run this part only if you want to use TLS/SSL socket):
 ```
 make -f Makefile-arm64-macOS keygen
-
-or 
-
+```
+or
+```
 make -f Makefile-x86-linux keygen
 ```
 
@@ -66,4 +66,9 @@ go to `MainView.swift`, and relace the boolean value
 ```
     @ObservedObject var networkViewModel = NetworkInputViewViewModel(tls: true)
 ```
-### 
+### 2. Certificate Generation
+go to `client` folder and run
+
+```
+./certgen.sh
+```
