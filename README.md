@@ -13,16 +13,35 @@
     - b.	With five clients sending queries concurrently.
     - c.	With ten clients sending queries concurrently.
 # Server compile instruction
-1. An arm64 version has been compiled and is available in the `/server/build` directory. Should you wish to compile it again, do not forget to place the ChatGPT API key in the `header.hpp` file. We chose not to include the key within the repository to avoid potential unauthorized use of the our own API key.
+1. An arm64 version has been compiled and is available in the `/server/build` directory. Should you wish to compile it again, do not forget to place the ChatGPT API key in the `header.hpp` file.
 
-2. Makefile
+2. Libraries
+- Install the curl and openssl libraries: Depending on your Linux distribution, install curl and openssl dev libraries. For Ubuntu/Debian you would do:
+```
+sudo apt-get update
+sudo apt-get install libcurl4-openssl-dev libssl-dev
+```
+- On macOS you would do:
+```
+brew install nlohmann-json
+brew install curl openssl
+```
+3. Makefile
 - Server compilation:
 ```
-make
+make -f Makefile-arm64-macOS
+
+or 
+
+make -f Makefile-x86-linux
 ```
 - TLS key Generation (run this part only if you want to use TLS/SSL socket):
 ```
-make keygen
+make -f Makefile-arm64-macOS keygen
+
+or 
+
+make -f Makefile-x86-linux keygen
 ```
 
 - Start the server (TCP socket):
@@ -36,7 +55,7 @@ make keygen
 ```
 3. If the Command Line Interface (CLI) client piques your interest, we have constructed a TCP CLI client located in the `/server/build` directory. Here is how you can run it:
 ```
-./client <iP address> <Port Number>
+./client <IP address> <Port Number>
 ``` 
 # Client
 

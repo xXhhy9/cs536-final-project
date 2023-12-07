@@ -2,6 +2,7 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <errno.h>
+#include <cstring>
 #include <iostream>
 #include <vector>
 #include "tls.hpp"
